@@ -16,6 +16,7 @@ public class CS4340Project1 {
     private int x;
     private int w0;
     private int w1;
+    private int counter;
     private boolean[] error;
     
     private int[][] trainingData;
@@ -24,8 +25,11 @@ public class CS4340Project1 {
     public CS4340Project1(int[][] train) { //, int[][] test) {
         this.trainingData = train;
         //this.testingData = test;
+        this.counter = 0;
         this.w0 = 0;
         this.w1 = 0;
+        this.c = 1;
+        this.k = 1;
         this.error = new boolean[train.length];
         Arrays.fill(this.error, true);
     }
@@ -42,30 +46,49 @@ public class CS4340Project1 {
     }
     
     public int discriminateFunction() {
-        return this.w0 + this.w1 * this.x;
+        if((this.w0 + this.w1 * this.x) >= 0 ) {
+            return 1;
+        }
+        else {
+            return -1;  
+        }
     }
     
     public int adjustW0() {
-        return this.w0 + this.c * this.k * this.d;
+        return this.w0 + (this.c * this.k * this.d);
     }
     
     public int adjustW1() {
-        return this.w1 + this.c * this.d + this.x;
+        return this.w1 + (this.c * this.d * this.x);
     }
     
     public void go() {
-          while(true) {
+          while(stillErrors()) {
               for(int i = 0; i < trainingData.length; i++) {
-                  for(int j = 0; j < trainingData[i].length; j++) {
-                      
-                  }
+                  System.out.println("Iteration: " + this.counter++);
+                      this.x = this.trainingData[i][0];
+                      System.out.println("x: " + this.x);
+                      this.d = this.trainingData[i][1];
+                       System.out.println("d: " + this.d);
+                      this.D = this.discriminateFunction();
+                       System.out.println("D: " + this.D);
+                      if(this.D != this.d) {
+                          this.error[i] = true;
+                          this.w0 = this.adjustW0();
+                           System.out.println("new w0: " + this.w0);
+                          this.w1 = this.adjustW1();
+                           System.out.println("new w1: " + this.w1);
+                      }
+                      else {
+                          this.error[i] = false;
+                      }
               }
           } 
     }
     
     public static void main(String[] args) {
         // TODO code application logic here
-        int[][] trainingData = new int[][] {{4,-1}, {-1,1}};
+        int[][] trainingData = new int[][] {{-4,-1}, {-1,1}};
         CS4340Project1 pla = new CS4340Project1(trainingData);
         pla.go();
     }
