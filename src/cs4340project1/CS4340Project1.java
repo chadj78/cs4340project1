@@ -25,7 +25,7 @@ public class CS4340Project1 {
     public CS4340Project1(int[][] train) { //, int[][] test) {
         this.trainingData = train;
         //this.testingData = test;
-        this.counter = 0;
+        this.counter = 1;
         this.w0 = 0;
         this.w1 = 0;
         this.c = 1;
@@ -72,6 +72,8 @@ public class CS4340Project1 {
                        System.out.println("d: " + this.d);
                       this.D = this.discriminateFunction();
                        System.out.println("D: " + this.D);
+                        System.out.println("old w0: " + this.w0);
+                         System.out.println("old w1: " + this.w1);
                       if(this.D != this.d) {
                           this.error[i] = true;
                           this.w0 = this.adjustW0();
