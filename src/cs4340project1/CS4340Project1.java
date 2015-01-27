@@ -30,9 +30,17 @@ public class CS4340Project1 {
         Arrays.fill(this.error, true);
     }
     
-    public void stillErrors() {
-        
+    public boolean stillErrors() {
+        boolean result = false;
+        for(int i = 0; i < this.error.length; i++) {
+            if(error[i] == true) {
+                result = true;
+                break;
+            }    
+        }
+        return result;
     }
+    
     public int discriminateFunction() {
         return this.w0 + this.w1 * this.x;
     }
