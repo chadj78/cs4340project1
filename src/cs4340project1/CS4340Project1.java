@@ -20,21 +20,29 @@ public class CS4340Project1 {
     private int w0;
     private int w1;
     private int w2;
-    
-    private double dB;
     // Counter variable to keep track of weight updates
     private int weightUpdates;
     // Counter variable to keep track of iterations
     private int counter;
-    // Boolean array to track errors
+    // Array of Boolean arrays to track errors
+    // Starts out with all elements set to true
+    // When all elements are false, breaks the while loop
     private boolean[] error;
-    // Array to hold traing data
+    // Array of int arrays to hold traing data
+    // The first two elements of each array are for x1, x2
+    // The 3rd elements are for the d values
     private int[][] trainingData;
+    // Array of int arrays to hold test data
+    // The first two elements are for x1, x2
+    // The 3rd elements are for the expected d values 
+    private int[][] testData;
  
+    
     // Constructor that takes a training and a test array
     // Also initializes weights, constants, and error array
-    public CS4340Project1(int[][] train) {
+    public CS4340Project1(int[][] train, int[][] test) {
         this.trainingData = train;
+        this.testData = test;
         this.counter = 0;
         this.weightUpdates = 0;
         this.w0 = 0;
@@ -47,8 +55,8 @@ public class CS4340Project1 {
     }
     
     // Method that loops through the error array
-    // Returns true if an error is encountered
-    // Returns false if no error is encountered
+    // Returns true if an error is encountered, any one or more elements is true 
+    // Returns false if no errors, all elements have to be false 
     public boolean stillErrors() {
         boolean result = false;
         for(int i = 0; i < this.error.length; i++) {
@@ -60,6 +68,8 @@ public class CS4340Project1 {
         return result;
     }
     
+    // Function to calculate D, using weights and x values
+    // Returns 1 if 0 or greater, -1 if less than zero
     public int discriminateFunction() {
         if((this.w0 + (this.w1 * this.x1) + (this.w2 * this.x2)) >= 0 ) {
             return 1;
@@ -69,24 +79,33 @@ public class CS4340Project1 {
         }
     }
     
+    // Adjusts the w0 weight variable using constants c,k
     public int adjustW0() {
         return this.w0 + (this.c * this.k * this.d);
     }
     
+     // Adjusts the w1 weight variable using constant c
     public int adjustW1() {
         return this.w1 + (this.c * this.d * this.x1);
     }
     
+    // Adjusts the w1 weight variable using constant c
     public int adjustW2() {
         return this.w2 + (this.c * this.d * this.x2);
     }
     
+    // Rates the test point given to -1 or 1
     public int evalTestData(int x1, int x2) {
          this.x1 = x1;
          this.x2 = x2;
          return this.discriminateFunction();
     }
     
+    // Method that has while control loop with for loop that goes through all training points
+    // While loop terminates if no errors in error array for all training data
+    // or if iterations exceed 10000
+    // If D != d, weights are updated and the error array element is set to true
+    // If D == d, no weight change and the error array element is set to false
     public void go() {
           while(stillErrors() || this.counter > 10000) {
               for(int i = 0; i < trainingData.length; i++) {
@@ -125,17 +144,13 @@ public class CS4340Project1 {
           System.out.println("Value of weight0: " + this.w0);
           System.out.println("Value of weight1: " + this.w1);
           System.out.println("Value of weight2: " + this.w2);
-          //this.dB = (double) -this.w0 / (double) this.w1;
-          //System.out.println("Line is x = " + this.dB);
     }
     
     public static void main(String[] args) {
         int[][] trainingData = new int[][]{{2,10,1}, {3,8,1}, {5,2,1}, {7,3,1}, {8,8,1}, {0,4,-1}, {2,5,-1}, {-1,-1,-1}, {4,1,-1}, {-2,-2,-1}};
-        //int[][] trainingData = new int[][]{{2,10,1}, {3,8,1}, {5,2,1}, {7,3,1}, {8,8,1}, {50,25,-1}, {65,30,-1}, {35,40,-1}, {24,13,-1}, {49,17,-1}};
-        int[][] testData = new int[][]{};
-        CS4340Project1 pla = new CS4340Project1(trainingData);
+        int[][] testData = new int[][]{{5,9,1}, {5,1,-1}, {3,6,-1}, {1,10,-1}, {-3,7,1}};
+        CS4340Project1 pla = new CS4340Project1(trainingData, testData);
         pla.go();
-        System.out.println(pla.evalTestData(5, 9));
     }
     
 }
