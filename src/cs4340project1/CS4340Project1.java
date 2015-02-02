@@ -6,21 +6,33 @@ import java.util.Arrays;
 
 public class CS4340Project1 {
 
+    // Decision boundry variable
     private int D;
+    // Constants used in weight adjustment
     private int k;
     private int c;
+    // The true class variable
     private int d;
+    // Sample variables
     private int x1;
     private int x2;
+    // Weight variables
     private int w0;
     private int w1;
     private int w2;
+    
     private double dB;
+    // Counter variable to keep track of weight updates
     private int weightUpdates;
+    // Counter variable to keep track of iterations
     private int counter;
+    // Boolean array to track errors
     private boolean[] error;
+    // Array to hold traing data
     private int[][] trainingData;
  
+    // Constructor that takes a training and a test array
+    // Also initializes weights, constants, and error array
     public CS4340Project1(int[][] train) {
         this.trainingData = train;
         this.counter = 0;
@@ -34,6 +46,9 @@ public class CS4340Project1 {
         Arrays.fill(this.error, true);
     }
     
+    // Method that loops through the error array
+    // Returns true if an error is encountered
+    // Returns false if no error is encountered
     public boolean stillErrors() {
         boolean result = false;
         for(int i = 0; i < this.error.length; i++) {
@@ -73,7 +88,7 @@ public class CS4340Project1 {
     }
     
     public void go() {
-          while(stillErrors()) {
+          while(stillErrors() || this.counter > 10000) {
               for(int i = 0; i < trainingData.length; i++) {
                   System.out.println("Iteration: " + ++this.counter);
                   this.x1 = this.trainingData[i][0];
@@ -107,6 +122,9 @@ public class CS4340Project1 {
           System.out.println("Final results: ");
           System.out.println("Number of iterations made on training set: " + this.counter);
           System.out.println("Number of weight updates: " + this.weightUpdates);
+          System.out.println("Value of weight0: " + this.w0);
+          System.out.println("Value of weight1: " + this.w1);
+          System.out.println("Value of weight2: " + this.w2);
           //this.dB = (double) -this.w0 / (double) this.w1;
           //System.out.println("Line is x = " + this.dB);
     }
@@ -117,7 +135,7 @@ public class CS4340Project1 {
         int[][] testData = new int[][]{};
         CS4340Project1 pla = new CS4340Project1(trainingData);
         pla.go();
-        System.out.println(pla.evalTestData(50, 200));
+        System.out.println(pla.evalTestData(5, 9));
     }
     
 }
