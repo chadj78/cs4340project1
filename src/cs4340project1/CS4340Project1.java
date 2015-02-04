@@ -107,7 +107,7 @@ public class CS4340Project1 {
     // If D != d, weights are updated and the error array element is set to true
     // If D == d, no weight change and the error array element is set to false
     public void go() {
-          while(stillErrors() || this.counter > 10000) {
+          while(stillErrors() && this.counter <= 10000) {
               for(int i = 0; i < trainingData.length; i++) {
                   System.out.println("Iteration: " + ++this.counter);
                   this.x1 = this.trainingData[i][0];
