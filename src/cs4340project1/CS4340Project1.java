@@ -136,21 +136,39 @@ public class CS4340Project1 {
                   }
               }
           }
+          
           System.out.println("");
           System.out.println("");
-          System.out.println("Final results: ");
-          System.out.println("Number of iterations made on training set: " + this.counter);
-          System.out.println("Number of weight updates: " + this.weightUpdates);
-          System.out.println("Value of weight0: " + this.w0);
-          System.out.println("Value of weight1: " + this.w1);
-          System.out.println("Value of weight2: " + this.w2);
+          System.out.println("Final results of training data: ");
+          
+          // If training data is not linearly seperable
+          if(this.counter > 10000) {
+              System.out.println("Trainging points are not linear seperable, in excess of 10k iterations.");
+          }
+          // If training data is linearly seperatable, print line equation and then run test points against line equation
+          else {
+              System.out.println("Training points given are linearly seperatable, equation is: D = " + this.w0 + " + " + this.w1 + "(x1) + " + this.w2 + "(x2)");
+              System.out.println("Number of iterations made on training set: " + this.counter);
+              System.out.println("Number of weight updates: " + this.weightUpdates);
+              System.out.println("Value of weight0: " + this.w0);
+              System.out.println("Value of weight1: " + this.w1);
+              System.out.println("Value of weight2: " + this.w2);
+              System.out.println();
+              System.out.println();
+              System.out.println("Results of test data:");
+              for(int i = 0; i < this.testData.length; i++) {
+                  System.out.println("test point " + (i + 1) + ": (" + this.testData[i][0] + "," + this.testData[i][1] +")");
+                  System.out.println("Expected classifaction value: " + this.testData[i][2]);
+                  System.out.println("Actual classifaction value from decision boundry: " + this.evalTestData(this.testData[i][0], this.testData[i][1]));
+                  System.out.println();
+              }
+          }
     }
     
     public static void main(String[] args) {
         int[][] trainingData = new int[][]{{2,10,1}, {3,8,1}, {5,2,1}, {7,3,1}, {8,8,1}, {0,4,-1}, {2,5,-1}, {-1,-1,-1}, {4,1,-1}, {-2,-2,-1}};
-        int[][] testData = new int[][]{{5,9,1}, {5,1,-1}, {3,6,-1}, {1,10,-1}, {-3,7,1}};
+        int[][] testData = new int[][]{{5,9,1}, {5,1,-1}, {3,6,-1}, {1,10,-1}, {-3,7,-1}};
         CS4340Project1 pla = new CS4340Project1(trainingData, testData);
         pla.go();
-    }
-    
+    } 
 }
